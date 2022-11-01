@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-mssql
+  namespace: g4
+  labels:
+    app: catalog-mssql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-mssql
+  template:
+    metadata:
+      labels:
+        app: catalog-mssql
+    spec:
+      containers:
+      - name: catalog-mssql
+        image: mcr.microsoft.com/mssql/server
+        ports:
+          - containerPort: 1433
+        env:
+          - name: SA_PASSWORD
+            value: Azerty@123
+          - name: ACCEPT_EULA
+            value: "Y"
+        volumeMounts:
+          - mountPath: "/home/data"
+            name: nfs-pv-catalog-db-g4
+      volumes:
+        - name: nfs-pv-catalog-db-g4
+          persistentVolumeClaim:
+            claimName: nfs-pvc-catalog-db
+      

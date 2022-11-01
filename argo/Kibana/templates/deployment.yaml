@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kibana
+  name: kibana
+  namespace: g4
+spec:
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      containers:
+      - env:
+        - name: ELASTICSEARCH_URL
+          value: http://10.4.97.6:30059 #elasticsearch is the same name as service resrouce name
+        - name: ELASTICSEARCH_HOSTS
+          value: http://10.4.97.6:30059
+        image: docker.elastic.co/kibana/kibana:7.15.0
+        name: kibana

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: basket-api
+  namespace: g4
+  labels:
+    app: basket-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: basket-api
+  template:
+    metadata:
+      labels:
+        app: basket-api
+    spec:
+      containers:
+        - name: basket-api
+          securityContext:
+          image: tooraa/di3-p1:basket-73
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+          - name: RabbitMQUrl
+            value: rabbitmq://rabbitmq-service.g4.svc.cluster.local
+          - name: RabbitMq_login
+            value: "guest"
+          - name: RabbitMq_password
+            value: "guest"
+          - name: UseInMemoryDatabase
+            value: "false"
+          - name: ElasticSearchUrl
+            value: elasticsearch.g4.svc.cluster.local

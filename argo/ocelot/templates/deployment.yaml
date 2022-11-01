@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ocelot-gateway
+  namespace: g4
+  labels:
+    app: ocelot-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ocelot-gateway
+  template:
+    metadata:
+      labels:
+        app: ocelot-gateway
+    spec:
+      containers:
+        - name: ocelot-gateway
+          securityContext:
+          image: tooraa/di3-p1:gateway-59
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+          - name: IdentityAuthority
+            value: keycloak.g4.svc.cluster.local/auth/realms/master
+          - name: IdentityAudience
+            value: account
+          - name: ASPNETCORE_ENVIRONMENT 
+            value: "Production"

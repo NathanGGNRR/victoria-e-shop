@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq-service
+  namespace: g4
+spec:
+  type: ClusterIP
+  ClusterIP: 10.107.51.0
+  ports:
+    - port: 5672
+      targetPort: 5672
+  selector:
+    app: rabbitmq
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: rabbitmq
+  name: rabbitmq
+  namespace: g4
+spec:
+  containers:
+  - image: rabbitmq:management
+    #command: ["rabbitmq-plugins"] 
+    #args: ["enable", "rabbitmq_management"]
+    name: rabbitmq
+    ports:
+    - containerPort: 5672
+    env:
+    - name: RABBITMQ_DEFAULT_USER 
+      value: "guest"
+    - name: RABBITMQ_DEFAULT_PASSWORD
+      value: "guest"
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

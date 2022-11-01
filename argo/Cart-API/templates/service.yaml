@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: basket-api-service
+  namespace: g4
+spec:
+  type: NodePort
+  #clusterIP: 10.105.152.120
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 31111
+      name: http
+  selector:
+    app: basket-api

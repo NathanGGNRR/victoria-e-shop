@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-api
+  namespace: g4
+  labels:
+    app: catalog-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: catalog-api
+  template:
+    metadata:
+      labels:
+        app: catalog-api
+    spec:
+      containers:
+        - name: catalog-api
+          securityContext:
+          image: tooraa/di3-p1:catalog-79
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+          - name: DatabaseConnectionString
+            value: Server=catalog-mssql-service.g4.svc.cluster.local;Database=victoria;User=sa;Password=Azerty@123;MultipleActiveResultSets=true
+          - name: RabbitMqUrl
+            value: rabbitmq://rabbitmq-service.g4.svc.cluster.local
+          - name: RabbitMq_login
+            value: "guest"
+          - name: RabbitMq_password
+            value: "guest"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: "Development"
+          - name: UseInMemoryDatabase
+            value: "false"
+          - name: ElasticSearchUrl
+            value: elasticsearch.g4.svc.cluster.local
+          - name: KeyCloakUrl
+            value: keycloak.g4.svc.cluster.local/auth/realms/master
+          - name: KeyCloakClientID
+            value: "victoria-app"

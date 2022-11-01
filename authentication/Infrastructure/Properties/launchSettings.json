@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Infrastructure": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "KeyCloakUrl": "http://localhost:8080/auth/realms/master",
+        "KeycloakClientID": "victoria-app"
+      }
+    }
+  }
+}
